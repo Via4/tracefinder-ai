@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  tracefinder-ai-api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - PORT=8000
+    volumes:
+      - .:/app
+    restart: unless-stopped
+
+  tracefinder-ai-frontend:
+    image: node:18-alpine
+    working_dir: /app/frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+    command: sh -c "npm install && npm start"
+    depends_on:
+      - tracefinder-ai-api
